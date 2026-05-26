@@ -38,7 +38,7 @@ export function buildEmpireAgents(options: EmpireOptions): NonNullable<Config["a
       mode: role.mode,
       hidden: role.hidden ?? false,
       model: normalized.models[role.id] ?? role.defaultModel,
-      prompt: buildPrompt(role, normalized.tone),
+      prompt: buildPrompt(role, normalized.tone, normalized.requireDispatchApproval),
       temperature: 0.1,
       permission: permissionFor(role.canEdit),
     };

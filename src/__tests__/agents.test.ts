@@ -55,6 +55,14 @@ describe("buildEmpireAgents", () => {
     expect(prompt).toContain("没有用户批红，不得发部办理");
   });
 
+  it("honors disabled dispatch approval in the cabinet prompt", () => {
+    const agents = buildEmpireAgents({ requireDispatchApproval: false });
+    const prompt = agents["empire-cabinet"]?.prompt ?? "";
+
+    expect(prompt).toContain("已批红票拟范围内，可以直接发部办理");
+    expect(prompt).not.toContain("没有用户批红，不得发部办理");
+  });
+
   it("keeps ministry prompts within department responsibility", () => {
     const agents = buildEmpireAgents({});
 
