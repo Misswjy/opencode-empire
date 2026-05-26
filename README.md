@@ -12,6 +12,7 @@
 | `empire-grand-secretary-a` | 否 | 隐藏大学士，负责独立审议 |
 | `empire-grand-secretary-b` | 否 | 隐藏大学士，负责独立审议 |
 | `empire-grand-secretary-c` | 否 | 隐藏大学士，负责独立审议 |
+| `empire-eunuch` | 是 | 司礼监：简单任务、日常杂务、传旨办差，可直接向六部发单办理 |
 | `empire-ministry-personnel` | 是 | 吏部：执行方案 |
 | `empire-ministry-revenue` | 是 | 户部：代码探索 |
 | `empire-ministry-rites` | 是 | 礼部：方案审核与交互文案 |
@@ -26,6 +27,7 @@
 - `/批红`：批准某版票拟或派工单。
 - `/驳回`：驳回当前票拟、派工单或办理结果，并要求内阁重拟。
 - `/发部`：准备六部派工单。
+- `/传旨`：司礼监传旨办差，直接向六部发单办理。
 - `/复奏`：汇总当前办理结果、证据、风险和待裁定事项。
 
 ## Installation
