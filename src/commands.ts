@@ -42,10 +42,5 @@ export function buildEmpireCommands(): CommandConfig {
       agent: EUNUCH_AGENT,
       template: "传旨如下，请司礼监择部发单办理，办毕复奏。\n\n$ARGUMENTS",
     },
-    办差: {
-      description: "司礼监办理简单杂务",
-      agent: EUNUCH_AGENT,
-      template: "请司礼监办理以下差事，直接处置或发部办理，办毕复奏。\n\n$ARGUMENTS",
-    },
   };
 }
