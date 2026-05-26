@@ -3,6 +3,7 @@ import type { Config } from "@opencode-ai/plugin";
 type CommandConfig = NonNullable<Config["command"]>;
 
 const CABINET_AGENT = "empire-cabinet";
+const EUNUCH_AGENT = "empire-eunuch";
 
 export function buildEmpireCommands(): CommandConfig {
   return {
@@ -35,6 +36,16 @@ export function buildEmpireCommands(): CommandConfig {
       description: "汇总当前办理结果、证据、风险和待裁定事项",
       agent: CABINET_AGENT,
       template: "请内阁按【内阁复奏】格式汇总当前办理情况。\n\n$ARGUMENTS",
+    },
+    传旨: {
+      description: "司礼监传旨办差，直接向六部发单",
+      agent: EUNUCH_AGENT,
+      template: "传旨如下，请司礼监择部发单办理，办毕复奏。\n\n$ARGUMENTS",
+    },
+    办差: {
+      description: "司礼监办理简单杂务",
+      agent: EUNUCH_AGENT,
+      template: "请司礼监办理以下差事，直接处置或发部办理，办毕复奏。\n\n$ARGUMENTS",
     },
   };
 }

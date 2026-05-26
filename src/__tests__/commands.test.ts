@@ -6,6 +6,8 @@ describe("buildEmpireCommands", () => {
     const commands = buildEmpireCommands();
 
     expect(Object.keys(commands).sort()).toEqual([
+      "传旨",
+      "办差",
       "发部",
       "复奏",
       "廷议",
