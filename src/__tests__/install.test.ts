@@ -60,4 +60,19 @@ describe("installEmpireConfig", () => {
       plugin: ["existing-plugin", "opencode-empire"],
     });
   });
+
+  it("does not duplicate an existing tuple plugin entry", async () => {
+    const home = await makeHome();
+    const opencodePath = join(home, ".config", "opencode", "opencode.json");
+    await writeFile(
+      opencodePath,
+      JSON.stringify({ plugin: [["opencode-empire", { tone: "high" }]] }, null, 2),
+    );
+
+    await installEmpireConfig({ home });
+
+    expect(JSON.parse(await readFile(opencodePath, "utf8"))).toMatchObject({
+      plugin: [["opencode-empire", { tone: "high" }]],
+    });
+  });
 });
