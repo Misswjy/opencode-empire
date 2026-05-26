@@ -28,27 +28,43 @@
 - `/发部`：准备六部派工单。
 - `/复奏`：汇总当前办理结果、证据、风险和待裁定事项。
 
+## Installation
+
+```bash
+bunx opencode-empire install
+```
+
+安装器会创建：
+
+- `~/.config/opencode/opencode-empire.json`：插件专属配置，用于设置模型、语气、禁用角色等。
+- `~/.config/opencode/opencode.json`：OpenCode 全局配置。安装器只会确保其中包含 `"opencode-empire"` 插件，不会覆盖已有字段。
+
+保存后需要重启 OpenCode，运行中的会话不会热加载新配置。
+
 ## Configuration
+
+编辑：
+
+```text
+~/.config/opencode/opencode-empire.json
+```
+
+示例：
 
 ```json
 {
-  "plugin": [
-    [
-      "opencode-empire",
-      {
-        "tone": "medium",
-        "requireDispatchApproval": true,
-        "models": {
-          "empire-cabinet": "cockpit/gpt-5.4",
-          "empire-ministry-works": "cockpit/gpt-5.5",
-          "empire-ministry-justice": "cockpit/gpt-5.5",
-          "empire-grand-secretary-a": "cockpit/gpt-5.5",
-          "empire-grand-secretary-b": "cockpit/gpt-5.4",
-          "empire-grand-secretary-c": "opencode-go/deepseek-v4-flash"
-        }
-      }
-    ]
-  ]
+  "$schema": "https://unpkg.com/opencode-empire@latest/opencode-empire.schema.json",
+  "tone": "medium",
+  "requireDispatchApproval": true,
+  "models": {
+    "empire-cabinet": "cockpit/gpt-5.4",
+    "empire-ministry-works": "cockpit/gpt-5.5",
+    "empire-ministry-justice": "cockpit/gpt-5.5",
+    "empire-grand-secretary-a": "cockpit/gpt-5.5",
+    "empire-grand-secretary-b": "cockpit/gpt-5.4",
+    "empire-grand-secretary-c": "opencode-go/deepseek-v4-flash"
+  },
+  "disabledRoles": []
 }
 ```
 
