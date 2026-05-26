@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://unpkg.com/opencode-empire@latest/opencode-empire.schema.json",
+  "title": "opencode-empire configuration",
+  "type": "object",
+  "properties": {
+    "$schema": { "type": "string" },
+    "tone": { "type": "string", "enum": ["light", "medium", "high"] },
+    "requireDispatchApproval": { "type": "boolean" },
+    "disabledRoles": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/EmpireRoleId" },
+      "uniqueItems": true
+    },
+    "models": {
+      "type": "object",
+      "properties": {
+        "empire-cabinet": { "type": "string" },
+        "empire-grand-secretary-a": { "type": "string" },
+        "empire-grand-secretary-b": { "type": "string" },
+        "empire-grand-secretary-c": { "type": "string" },
+        "empire-ministry-personnel": { "type": "string" },
+        "empire-ministry-revenue": { "type": "string" },
+        "empire-ministry-rites": { "type": "string" },
+        "empire-ministry-war": { "type": "string" },
+        "empire-ministry-justice": { "type": "string" },
+        "empire-ministry-works": { "type": "string" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "EmpireRoleId": {
+      "type": "string",
+      "enum": [
+        "empire-cabinet",
+        "empire-grand-secretary-a",
+        "empire-grand-secretary-b",
+        "empire-grand-secretary-c",
+        "empire-ministry-personnel",
+        "empire-ministry-revenue",
+        "empire-ministry-rites",
+        "empire-ministry-war",
+        "empire-ministry-justice",
+        "empire-ministry-works"
+      ]
+    }
+  }
+}
