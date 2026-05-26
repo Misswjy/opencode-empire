@@ -44,4 +44,22 @@ describe("buildEmpireAgents", () => {
     expect(agents["empire-ministry-works"]?.model).toBe("cockpit/gpt-5.5");
     expect(agents["empire-ministry-war"]).toBeUndefined();
   });
+
+  it("includes required cabinet forms and approval boundary", () => {
+    const agents = buildEmpireAgents({});
+    const prompt = agents["empire-cabinet"]?.prompt ?? "";
+
+    expect(prompt).toContain("【内阁票拟】");
+    expect(prompt).toContain("【六部派工单】");
+    expect(prompt).toContain("【内阁复奏】");
+    expect(prompt).toContain("没有用户批红，不得发部办理");
+  });
+
+  it("keeps ministry prompts within department responsibility", () => {
+    const agents = buildEmpireAgents({});
+
+    expect(agents["empire-ministry-revenue"]?.prompt).toContain("代码探索");
+    expect(agents["empire-ministry-works"]?.prompt).toContain("代码实现");
+    expect(agents["empire-ministry-justice"]?.prompt).toContain("代码审查");
+  });
 });
