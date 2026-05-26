@@ -1,32 +1,32 @@
 # opencode-empire
 
-`opencode-empire` is an OpenCode plugin for imperial-style multi-agent orchestration.
+`opencode-empire` 是一个 OpenCode 插件，用于提供带有“内阁/六部”风格的多 agent 编排体验。
 
-You talk to `empire-cabinet`. The cabinet clarifies requirements, convenes three hidden grand secretaries, drafts a proposal, asks for approval, prepares a ministry dispatch, and summarizes results.
+你主要和 `empire-cabinet` 对话。内阁负责澄清需求、召集三位隐藏大学士廷议、形成票拟、请求批红、准备六部派工，并在办理后汇总复奏。
 
 ## Agents
 
-| Agent | Visible | Role |
+| Agent | 可见 | 职责 |
 | --- | --- | --- |
-| `empire-cabinet` | Yes | Cabinet primary agent for 听旨、追问、廷议、票拟、批红、发部、复奏 |
-| `empire-grand-secretary-a` | No | Hidden grand secretary for independent deliberation |
-| `empire-grand-secretary-b` | No | Hidden grand secretary for independent deliberation |
-| `empire-grand-secretary-c` | No | Hidden grand secretary for independent deliberation |
-| `empire-ministry-personnel` | Yes | 吏部: execution plan |
-| `empire-ministry-revenue` | Yes | 户部: code exploration |
-| `empire-ministry-rites` | Yes | 礼部: plan review and interaction copy |
-| `empire-ministry-war` | Yes | 兵部: execution and automation |
-| `empire-ministry-justice` | Yes | 刑部: code review and test gate |
-| `empire-ministry-works` | Yes | 工部: code implementation |
+| `empire-cabinet` | 是 | 内阁 primary agent，负责听旨、追问、廷议、票拟、批红、发部、复奏 |
+| `empire-grand-secretary-a` | 否 | 隐藏大学士，负责独立审议 |
+| `empire-grand-secretary-b` | 否 | 隐藏大学士，负责独立审议 |
+| `empire-grand-secretary-c` | 否 | 隐藏大学士，负责独立审议 |
+| `empire-ministry-personnel` | 是 | 吏部：执行方案 |
+| `empire-ministry-revenue` | 是 | 户部：代码探索 |
+| `empire-ministry-rites` | 是 | 礼部：方案审核与交互文案 |
+| `empire-ministry-war` | 是 | 兵部：执行流程与自动化 |
+| `empire-ministry-justice` | 是 | 刑部：代码审查与测试把关 |
+| `empire-ministry-works` | 是 | 工部：代码实现 |
 
 ## Commands
 
-- `/票拟`: enter proposal drafting.
-- `/廷议`: ask the three hidden grand secretaries to deliberate.
-- `/批红`: approve a proposal or dispatch.
-- `/驳回`: reject and ask the cabinet to redraft.
-- `/发部`: prepare ministry dispatch.
-- `/复奏`: summarize current results, evidence, risks, and decisions.
+- `/票拟`：进入需求澄清与票拟流程。
+- `/廷议`：请三位隐藏大学士独立审议。
+- `/批红`：批准某版票拟或派工单。
+- `/驳回`：驳回当前票拟、派工单或办理结果，并要求内阁重拟。
+- `/发部`：准备六部派工单。
+- `/复奏`：汇总当前办理结果、证据、风险和待裁定事项。
 
 ## Configuration
 
@@ -54,15 +54,24 @@ You talk to `empire-cabinet`. The cabinet clarifies requirements, convenes three
 
 ## Workflow
 
-1. Choose `empire-cabinet`.
-2. Describe the task naturally.
-3. The cabinet asks one clarifying question at a time when needed.
-4. The cabinet presents `【内阁票拟】`.
-5. Approve with `/批红`.
-6. Ask for `/发部` or tell the cabinet to dispatch ministries.
-7. Review `【六部派工单】`.
-8. Approve dispatch.
-9. Review `【内阁复奏】` after ministries report back.
+1. 选择 `empire-cabinet`。
+2. 自然描述任务。
+3. 如果需求不清，内阁一次只追问一个关键问题。
+4. 内阁呈递 `【内阁票拟】`。
+5. 使用 `/批红` 批准票拟。
+6. 使用 `/发部`，或告诉内阁准备六部派工。
+7. 审阅 `【六部派工单】`。
+8. 批准派工。
+9. 六部办理后，审阅 `【内阁复奏】`。
+
+如果票拟、派工单或办理结果不合意，可以使用 `/驳回` 要求内阁说明问题并重拟。
+
+## Options
+
+- `tone`：角色化程度，支持 `light`、`medium`、`high`。
+- `requireDispatchApproval`：是否要求派工前再次确认。默认为 `true`；设为 `false` 时，内阁可在已批红票拟范围内直接发部办理。
+- `models`：按 agent ID 覆盖模型。
+- `disabledRoles`：禁用指定 agent。
 
 ## Development
 
