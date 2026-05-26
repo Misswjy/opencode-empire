@@ -2,6 +2,7 @@ export type ToneLevel = "light" | "medium" | "high";
 
 export type EmpireRoleId =
   | "empire-cabinet"
+  | "empire-eunuch"
   | "empire-grand-secretary-a"
   | "empire-grand-secretary-b"
   | "empire-grand-secretary-c"
