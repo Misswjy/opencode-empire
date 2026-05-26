@@ -3,7 +3,7 @@ import { DEFAULT_REQUIRE_DISPATCH_APPROVAL, DEFAULT_TONE, EMPIRE_ROLES } from ".
 import { buildPrompt } from "./prompts.js";
 import type { EmpireOptions, EmpireRoleId } from "./types.js";
 
-type AgentConfig = NonNullable<Config["agent"]>[string];
+type AgentConfig = NonNullable<NonNullable<Config["agent"]>[string]>;
 
 function permissionFor(canEdit: boolean): AgentConfig["permission"] {
   return {
