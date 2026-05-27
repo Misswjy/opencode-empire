@@ -1,12 +1,12 @@
 {
   "name": "opencode-empire",
-  "version": "0.1.0",
+  "version": "0.2.1",
   "description": "OpenCode imperial multi-agent orchestration plugin.",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "bin": {
-    "opencode-empire": "./dist/cli.js"
+    "opencode-empire": "dist/cli.js"
   },
   "exports": {
     ".": {
@@ -22,7 +22,7 @@
   "scripts": {
     "clean": "node -e \"fs.rmSync('dist', { recursive: true, force: true })\"",
     "generate": "node scripts/generate-prompts.ts",
-    "build": "npm run clean && npm run generate && tsc -p tsconfig.build.json",
+    "build": "npm run clean && npm run generate && tsc -p tsconfig.build.json && chmod +x dist/cli.js",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run",
     "verify": "npm run generate && npm run typecheck && npm run test && npm run build"
