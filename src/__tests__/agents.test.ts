@@ -2,10 +2,11 @@ import { describe, expect, it } from "vitest";
 import { buildEmpireAgents } from "../agents.js";
 
 describe("buildEmpireAgents", () => {
-  it("registers cabinet, hidden grand secretaries, and visible ministries", () => {
+  it("registers cabinet as mode all, eunuch as primary, hidden grand secretaries, and visible ministries", () => {
     const agents = buildEmpireAgents({});
 
-    expect(agents["empire-cabinet"]?.mode).toBe("primary");
+    expect(agents["empire-cabinet"]?.mode).toBe("all");
+    expect(agents["empire-eunuch"]?.mode).toBe("primary");
     expect(agents["empire-grand-secretary-a"]?.hidden).toBe(true);
     expect(agents["empire-grand-secretary-b"]?.hidden).toBe(true);
     expect(agents["empire-grand-secretary-c"]?.hidden).toBe(true);
@@ -43,6 +44,26 @@ describe("buildEmpireAgents", () => {
     expect(agents["empire-cabinet"]?.model).toBe("cockpit/gpt-5.4");
     expect(agents["empire-ministry-works"]?.model).toBe("cockpit/gpt-5.5");
     expect(agents["empire-ministry-war"]).toBeUndefined();
+  });
+
+  it("includes eunuch decree format and daily primary role", () => {
+    const agents = buildEmpireAgents({});
+    const prompt = agents["empire-eunuch"]?.prompt ?? "";
+
+    expect(prompt).toContain("日常主对话入口");
+    expect(prompt).toContain("【传旨】");
+    expect(prompt).toContain("着令：");
+    expect(prompt).toContain("办毕复奏。");
+    expect(prompt).toContain("发部无需批红");
+  });
+
+  it("describes cabinet as dual-role agent with mode:all capabilities", () => {
+    const agents = buildEmpireAgents({});
+    const prompt = agents["empire-cabinet"]?.prompt ?? "";
+
+    expect(prompt).toContain("内阁票拟");
+    expect(prompt).toContain("作为子代理");
+    expect(prompt).toContain("作为主代理");
   });
 
   it("includes required cabinet forms and approval boundary", () => {

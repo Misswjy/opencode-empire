@@ -12,8 +12,8 @@ export const DEFAULT_MODELS = {
 } as const;
 
 export const EMPIRE_ROLES: EmpireRole[] = [
-  { id: "empire-cabinet", title: "内阁", office: "内阁", description: "主 agent。负责听旨、追问、廷议、票拟、请批红、发部和复奏。", mode: "primary", canEdit: false, defaultModel: DEFAULT_MODELS.cabinet },
-  { id: "empire-eunuch", title: "司礼监", office: "司礼监", description: "主 agent。负责简单任务、日常杂务、传旨办差，可直接向六部发单办理。", mode: "primary", canEdit: false, defaultModel: DEFAULT_MODELS.standard },
+  { id: "empire-cabinet", title: "内阁", office: "内阁", description: "主 agent / 子 agent。负责票拟、廷议、发部和复奏。可被司礼监传旨调用直出票拟。", mode: "all", canEdit: false, defaultModel: DEFAULT_MODELS.cabinet },
+  { id: "empire-eunuch", title: "司礼监", office: "司礼监", description: "日常主 agent。负责日常问答与简单任务，以传旨形式向六部及内阁派单；需廷议时建议切换至内阁。", mode: "primary", canEdit: false, defaultModel: DEFAULT_MODELS.standard },
   { id: "empire-grand-secretary-a", title: "内阁大学士甲", office: "内阁", description: "隐藏 subagent。独立审议需求，输出共识、分歧、风险和待裁决事项。", mode: "subagent", hidden: true, canEdit: false, defaultModel: DEFAULT_MODELS.strong },
   { id: "empire-grand-secretary-b", title: "内阁大学士乙", office: "内阁", description: "隐藏 subagent。独立审议需求，输出共识、分歧、风险和待裁决事项。", mode: "subagent", hidden: true, canEdit: false, defaultModel: DEFAULT_MODELS.standard },
   { id: "empire-grand-secretary-c", title: "内阁大学士丙", office: "内阁", description: "隐藏 subagent。独立审议需求，输出共识、分歧、风险和待裁决事项。", mode: "subagent", hidden: true, canEdit: false, defaultModel: DEFAULT_MODELS.fast },

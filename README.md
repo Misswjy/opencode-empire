@@ -1,28 +1,28 @@
 # opencode-empire
 
-`opencode-empire` 是一个 OpenCode 插件，用于提供带有“内阁/六部”风格的多 agent 编排体验。
+`opencode-empire` 是一个 OpenCode 插件，用于提供带有"司礼监/内阁/六部"风格的多 agent 编排体验。
 
-你主要和 `empire-cabinet` 对话。内阁负责澄清需求、召集三位隐藏大学士廷议、形成票拟、请求批红、准备六部派工，并在办理后汇总复奏。
+启动后默认选中司礼监（empire-eunuch）。日常任务司礼监直接处理或以【传旨】形式向六部及内阁派单；需要廷议时切换至内阁（empire-cabinet）。
 
 ## Agents
 
-| Agent | 可见 | 职责 |
-| --- | --- | --- |
-| `empire-cabinet` | 是 | 内阁 primary agent，负责听旨、追问、廷议、票拟、批红、发部、复奏 |
-| `empire-grand-secretary-a` | 否 | 隐藏大学士，负责独立审议 |
-| `empire-grand-secretary-b` | 否 | 隐藏大学士，负责独立审议 |
-| `empire-grand-secretary-c` | 否 | 隐藏大学士，负责独立审议 |
-| `empire-eunuch` | 是 | 司礼监：简单任务、日常杂务、传旨办差，可直接向六部发单办理 |
-| `empire-ministry-personnel` | 是 | 吏部：执行方案 |
-| `empire-ministry-revenue` | 是 | 户部：代码探索 |
-| `empire-ministry-rites` | 是 | 礼部：方案审核与交互文案 |
-| `empire-ministry-war` | 是 | 兵部：执行流程与自动化 |
-| `empire-ministry-justice` | 是 | 刑部：代码审查与测试把关 |
-| `empire-ministry-works` | 是 | 工部：代码实现 |
+| Agent | 可见 | 模式 | 职责 |
+| --- | --- | --- | --- |
+| `empire-eunuch` | 是 | primary | 司礼监：日常主 agent。日常问答与简单任务直办，以传旨向六部/内阁派单；需廷议时建议切换内阁 |
+| `empire-cabinet` | 是 | all | 内阁：主/子代理。主代理负责票拟、廷议、发部、复奏。子代理被司礼监传旨调用直出票拟 |
+| `empire-grand-secretary-a` | 否 | subagent | 隐藏大学士，负责独立审议 |
+| `empire-grand-secretary-b` | 否 | subagent | 隐藏大学士，负责独立审议 |
+| `empire-grand-secretary-c` | 否 | subagent | 隐藏大学士，负责独立审议 |
+| `empire-ministry-personnel` | 是 | subagent | 吏部：执行方案 |
+| `empire-ministry-revenue` | 是 | subagent | 户部：代码探索 |
+| `empire-ministry-rites` | 是 | subagent | 礼部：方案审核与交互文案 |
+| `empire-ministry-war` | 是 | subagent | 兵部：执行流程与自动化 |
+| `empire-ministry-justice` | 是 | subagent | 刑部：代码审查与测试把关 |
+| `empire-ministry-works` | 是 | subagent | 工部：代码实现 |
 
 ## Command
 
-- `/廷议`：请三位隐藏大学士独立审议。
+- `/廷议`：请三位隐藏大学士独立审议（需在 empire-cabinet 主代理下使用）。
 
 ## Installation
 
@@ -66,17 +66,21 @@ bunx opencode-empire install
 
 ## Workflow
 
-1. 选择 `empire-cabinet`。
+1. 日常使用 `empire-eunuch`（司礼监，默认选中）。
 2. 自然描述任务。
-3. 如果需求不清，内阁一次只追问一个关键问题。
-4. 内阁呈递 `【内阁票拟】`。
-5. 批准票拟。
-6. 告诉内阁准备六部派工。
-7. 审阅 `【六部派工单】`。
-8. 批准派工。
-9. 六部办理后，审阅 `【内阁复奏】`。
+3. 简单任务司礼监直接处理。六部任务（探索/实现/审查）司礼监以传旨直接发部，办理后复奏。
+4. 复杂票拟需求：司礼监传旨内阁票拟 → 内阁回报票拟 → 司礼监呈皇帝批红 → 批红后传旨六部执行。
+5. 需要多方独立审议（廷议）时，切换到 `empire-cabinet`，使用 `/廷议` 召大学士。
+6. 六部办理后，审阅 `【内阁复奏】` 或 `【本部复奏】`。
 
-如果票拟、派工单或办理结果不合意，可以要求内阁说明问题并重拟。
+## 传旨格式
+
+```
+【传旨】
+着令：[内阁/某部]
+差事：[任务描述]
+办毕复奏。
+```
 
 ## Options
 

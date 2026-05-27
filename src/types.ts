@@ -27,7 +27,7 @@ export interface EmpireRole {
   title: string;
   office: string;
   description: string;
-  mode: "primary" | "subagent";
+  mode: "primary" | "subagent" | "all";
   hidden?: boolean;
   canEdit: boolean;
   defaultModel: string;

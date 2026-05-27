@@ -28,7 +28,7 @@ function fakeInput() {
 }
 
 describe("plugin module", () => {
-  it("注册 cabinet、hidden grand secretary、works ministry 与廷议 command", async () => {
+  it("注册 cabinet（mode:all）、hidden grand secretary、works ministry 与廷议 command，设 default_agent 为司礼监", async () => {
     const hooks = await pluginModule.server(fakeInput() as never, {
       models: { "empire-cabinet": "cockpit/gpt-5.4" },
     });
@@ -39,7 +39,9 @@ describe("plugin module", () => {
     const agents = (config.agent ?? {}) as Record<string, Record<string, unknown>>;
     const commands = (config.command ?? {}) as Record<string, Record<string, unknown>>;
 
+    expect(config.default_agent).toBe("empire-eunuch");
     expect(agents["empire-cabinet"]?.model).toBe("cockpit/gpt-5.4");
+    expect(agents["empire-cabinet"]?.mode).toBe("all");
     expect(agents["empire-grand-secretary-a"]?.hidden).toBe(true);
     expect(agents["empire-ministry-works"]?.hidden).toBe(false);
     expect(Object.keys(commands)).toEqual(["廷议"]);
