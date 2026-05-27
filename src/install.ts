@@ -19,11 +19,16 @@ const DEFAULT_EMPIRE_CONFIG = {
   requireDispatchApproval: true,
   models: {
     "empire-cabinet": "cockpit/gpt-5.4",
-    "empire-ministry-works": "cockpit/gpt-5.5",
-    "empire-ministry-justice": "cockpit/gpt-5.5",
+    "empire-eunuch": "cockpit/gpt-5.4",
     "empire-grand-secretary-a": "cockpit/gpt-5.5",
     "empire-grand-secretary-b": "cockpit/gpt-5.4",
     "empire-grand-secretary-c": "opencode-go/deepseek-v4-flash",
+    "empire-ministry-personnel": "cockpit/gpt-5.4",
+    "empire-ministry-revenue": "opencode-go/deepseek-v4-flash",
+    "empire-ministry-rites": "cockpit/gpt-5.4",
+    "empire-ministry-war": "cockpit/gpt-5.4",
+    "empire-ministry-justice": "cockpit/gpt-5.5",
+    "empire-ministry-works": "cockpit/gpt-5.5",
   },
   disabledRoles: [],
 };
