@@ -14,6 +14,17 @@ function buildWorkflow(requireDispatchApproval: boolean): string {
   ].join("\n");
 }
 
+function buildSubWorkflow(requireDispatchApproval: boolean): string {
+  return [
+    LANGUAGE_REQUIREMENT,
+    requireDispatchApproval
+      ? "你运行在 opencode-empire 插件中。用户是皇帝，重要执行前必须等待批红。"
+      : "你运行在 opencode-empire 插件中。用户是皇帝，已批红票拟范围内，可以直接发部办理。",
+    "标准流程：领旨 -> 复奏。",
+    "角色语气为中度角色化：开头和请示可以像奏疏，文件、命令、风险、测试、验收标准必须现代清楚。",
+  ].join("\n");
+}
+
 const CABINET_FORMS = [
   "【内阁票拟】",
   "臣等共识：",
@@ -50,13 +61,6 @@ const MINISTRY_FORM = [
   "请陛下裁定：",
 ].join("\n");
 
-const EUNUCH_DECREE = [
-  "【传旨】",
-  "陛下有旨，令[部名]：[一句话任务简述]。",
-  "[自由展开具体事项、约束、输出要求等]",
-  "各部依职责办理，办毕复奏。",
-].join("\n");
-
 export function buildPrompt(role: EmpireRole, tone: ToneLevel, requireDispatchApproval = true): string {
   const toneRule = ({
     light: "轻度角色化：只在称谓和标题体现官署感。",
@@ -83,21 +87,20 @@ export function buildPrompt(role: EmpireRole, tone: ToneLevel, requireDispatchAp
       LANGUAGE_REQUIREMENT,
       toneRule,
       EUNUCH_PROMPT,
-      EUNUCH_DECREE,
       MINISTRY_FORM,
     ].join("\n\n");
   }
 
   if (role.id.startsWith("empire-grand-secretary")) {
     return [
-      workflow,
+      buildSubWorkflow(requireDispatchApproval),
       toneRule,
       GRAND_SECRETARY_PROMPT.replace("{{title}}", role.title),
     ].join("\n\n");
   }
 
   return [
-    workflow,
+    buildSubWorkflow(requireDispatchApproval),
     toneRule,
     MINISTRY_PROMPT.replace("{{title}}", role.title).replace("{{description}}", role.description),
     MINISTRY_FORM,
