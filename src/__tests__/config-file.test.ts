@@ -32,13 +32,23 @@ describe("loadEmpireOptions", () => {
     const home = await makeHome();
     await writeFile(
       getEmpireConfigPath(home),
-      JSON.stringify({ tone: "light", models: { "empire-cabinet": "openai/gpt-5" } }),
+      JSON.stringify({ tone: "light", agents: { "empire-cabinet": { model: "openai/gpt-5" } } }),
     );
 
     await expect(loadEmpireOptions({ home, tupleOptions: {} })).resolves.toMatchObject({
       tone: "light",
-      models: { "empire-cabinet": "openai/gpt-5" },
+      agents: { "empire-cabinet": { model: "openai/gpt-5" } },
     });
+  });
+
+  it("drops legacy models from loaded config", async () => {
+    const home = await makeHome();
+    await writeFile(
+      getEmpireConfigPath(home),
+      JSON.stringify({ tone: "light", models: { "empire-cabinet": "openai/gpt-5" } }),
+    );
+
+    await expect(loadEmpireOptions({ home, tupleOptions: {} })).resolves.not.toHaveProperty("models");
   });
 
   it("lets tuple options override the dedicated config file", async () => {

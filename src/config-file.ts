@@ -48,12 +48,8 @@ function mergeAgents(fileAgents: AgentOptionsMap = {}, tupleAgents: AgentOptions
 
 function mergeEmpireOptions(fileOptions: EmpireOptions, tupleOptions: EmpireOptions): EmpireOptions {
   return {
-    ...fileOptions,
-    ...tupleOptions,
-    models: {
-      ...(fileOptions.models ?? {}),
-      ...(tupleOptions.models ?? {}),
-    },
+    tone: tupleOptions.tone ?? fileOptions.tone,
+    requireDispatchApproval: tupleOptions.requireDispatchApproval ?? fileOptions.requireDispatchApproval,
     agents: mergeAgents(fileOptions.agents, tupleOptions.agents),
     disabledRoles: tupleOptions.disabledRoles ?? fileOptions.disabledRoles,
   };

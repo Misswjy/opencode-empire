@@ -15,8 +15,6 @@ export type EmpireRoleId =
   | "empire-ministry-justice"
   | "empire-ministry-works";
 
-export type ModelMap = Partial<Record<EmpireRoleId, string>>;
-
 type AgentConfig = NonNullable<NonNullable<Config["agent"]>[string]>;
 
 export interface EmpireAgentOptions {
@@ -28,7 +26,6 @@ export interface EmpireAgentOptions {
 export type AgentOptionsMap = Partial<Record<EmpireRoleId, EmpireAgentOptions>>;
 
 export interface EmpireOptions {
-  models?: ModelMap;
   agents?: AgentOptionsMap;
   tone?: ToneLevel;
   requireDispatchApproval?: boolean;

@@ -30,7 +30,7 @@ function fakeInput() {
 describe("plugin module", () => {
   it("注册 cabinet（mode:all）、hidden grand secretary、works ministry 与廷议 command，设 default_agent 为司礼监", async () => {
     const hooks = await pluginModule.server(fakeInput() as never, {
-      models: { "empire-cabinet": "cockpit/gpt-5.4" },
+      agents: { "empire-cabinet": { model: "cockpit/gpt-5.4" } },
     });
 
     const config: Record<string, unknown> = {};
@@ -54,7 +54,7 @@ describe("plugin module", () => {
       getEmpireConfigPath(home),
       JSON.stringify({
         tone: "light",
-        models: { "empire-cabinet": "openai/gpt-5" },
+        agents: { "empire-cabinet": { model: "openai/gpt-5" } },
       }),
     );
 

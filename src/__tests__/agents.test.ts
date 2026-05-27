@@ -32,11 +32,15 @@ describe("buildEmpireAgents", () => {
     expect(agents["empire-ministry-works"]?.permission?.edit).toBe("ask");
   });
 
-  it("uses model overrides and disabled roles", () => {
+  it("uses agent-scoped model overrides and disabled roles", () => {
     const agents = buildEmpireAgents({
-      models: {
-        "empire-cabinet": "cockpit/gpt-5.4",
-        "empire-ministry-works": "cockpit/gpt-5.5",
+      agents: {
+        "empire-cabinet": {
+          model: "cockpit/gpt-5.4",
+        },
+        "empire-ministry-works": {
+          model: "cockpit/gpt-5.5",
+        },
       },
       disabledRoles: ["empire-ministry-war"],
     });
@@ -46,19 +50,14 @@ describe("buildEmpireAgents", () => {
     expect(agents["empire-ministry-war"]).toBeUndefined();
   });
 
-  it("uses agent-scoped model over legacy model overrides", () => {
+  it("ignores legacy model overrides", () => {
     const agents = buildEmpireAgents({
       models: {
-        "empire-cabinet": "cockpit/gpt-5.4",
+        "empire-cabinet": "openai/gpt-5",
       },
-      agents: {
-        "empire-cabinet": {
-          model: "cockpit/gpt-5.5",
-        },
-      },
-    });
+    } as never);
 
-    expect(agents["empire-cabinet"]?.model).toBe("cockpit/gpt-5.5");
+    expect(agents["empire-cabinet"]?.model).toBe("cockpit/gpt-5.4");
   });
 
   it("passes agent-scoped options to generated agents", () => {

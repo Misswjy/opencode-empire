@@ -12,23 +12,6 @@
       "items": { "$ref": "#/$defs/EmpireRoleId" },
       "uniqueItems": true
     },
-    "models": {
-      "type": "object",
-      "properties": {
-        "empire-cabinet": { "type": "string" },
-        "empire-eunuch": { "type": "string" },
-        "empire-grand-secretary-a": { "type": "string" },
-        "empire-grand-secretary-b": { "type": "string" },
-        "empire-grand-secretary-c": { "type": "string" },
-        "empire-ministry-personnel": { "type": "string" },
-        "empire-ministry-revenue": { "type": "string" },
-        "empire-ministry-rites": { "type": "string" },
-        "empire-ministry-war": { "type": "string" },
-        "empire-ministry-justice": { "type": "string" },
-        "empire-ministry-works": { "type": "string" }
-      },
-      "additionalProperties": false
-    },
     "agents": {
       "type": "object",
       "properties": {
