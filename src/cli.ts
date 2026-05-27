@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-import { pathToFileURL } from "node:url";
+import { realpathSync } from "node:fs";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import { installEmpireConfig } from "./install.js";
 
 interface CliDependencies {
@@ -27,7 +28,7 @@ export async function runCli(args: string[], dependencies: CliDependencies): Pro
   }
 }
 
-if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+if (process.argv[1] && import.meta.url === pathToFileURL(realpathSync(process.argv[1])).href) {
   process.exitCode = await runCli(process.argv.slice(2), {
     install: installEmpireConfig,
     log: console.error,
