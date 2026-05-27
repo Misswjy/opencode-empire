@@ -27,7 +27,7 @@
 ## Installation
 
 ```bash
-bunx opencode-empire install
+npx opencode-empire install
 ```
 
 安装器会创建：
