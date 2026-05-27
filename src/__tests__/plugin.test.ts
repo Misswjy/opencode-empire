@@ -28,7 +28,7 @@ function fakeInput() {
 }
 
 describe("plugin module", () => {
-  it("注册 cabinet、hidden grand secretary、works ministry 与票拟 command", async () => {
+  it("注册 cabinet、hidden grand secretary、works ministry 与廷议 command", async () => {
     const hooks = await pluginModule.server(fakeInput() as never, {
       models: { "empire-cabinet": "cockpit/gpt-5.4" },
     });
@@ -42,7 +42,8 @@ describe("plugin module", () => {
     expect(agents["empire-cabinet"]?.model).toBe("cockpit/gpt-5.4");
     expect(agents["empire-grand-secretary-a"]?.hidden).toBe(true);
     expect(agents["empire-ministry-works"]?.hidden).toBe(false);
-    expect(commands["票拟"]?.agent).toBe("empire-cabinet");
+    expect(Object.keys(commands)).toEqual(["廷议"]);
+    expect(commands["廷议"]?.agent).toBe("empire-cabinet");
   });
 
   it("读取专属配置文件，并允许 tuple options 覆盖", async () => {

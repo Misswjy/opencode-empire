@@ -943,14 +943,9 @@ You talk to `empire-cabinet`. The cabinet clarifies requirements, convenes three
 | `empire-ministry-justice` | Yes | 刑部: code review and test gate |
 | `empire-ministry-works` | Yes | 工部: code implementation |
 
-## Commands
+## Command
 
-- `/票拟`: enter proposal drafting.
 - `/廷议`: ask the three hidden grand secretaries to deliberate.
-- `/批红`: approve a proposal or dispatch.
-- `/驳回`: reject and ask the cabinet to redraft.
-- `/发部`: prepare ministry dispatch.
-- `/复奏`: summarize current results, evidence, risks, and decisions.
 
 ## Configuration
 
@@ -982,8 +977,8 @@ You talk to `empire-cabinet`. The cabinet clarifies requirements, convenes three
 2. Describe the task naturally.
 3. The cabinet asks one clarifying question at a time when needed.
 4. The cabinet presents `【内阁票拟】`.
-5. Approve with `/批红`.
-6. Ask for `/发部` or tell the cabinet to dispatch ministries.
+5. Approve the proposal.
+6. Tell the cabinet to dispatch ministries.
 7. Review `【六部派工单】`.
 8. Approve dispatch.
 9. Review `【内阁复奏】` after ministries report back.
