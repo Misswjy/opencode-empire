@@ -1,4 +1,5 @@
 import type { EmpireRole, ToneLevel } from "./types.js";
+import { EUNUCH_PROMPT, CABINET_PROMPT, GRAND_SECRETARY_PROMPT, MINISTRY_PROMPT } from "./prompts/generated.js";
 
 const LANGUAGE_REQUIREMENT = "你必须使用中文。";
 
@@ -71,10 +72,7 @@ export function buildPrompt(role: EmpireRole, tone: ToneLevel, requireDispatchAp
     return [
       workflow,
       toneRule,
-      "你是内阁 agent，mode 为 all——既可作主代理也可作子代理。",
-      "作为主代理时：负责复杂需求的票拟、廷议、发部、复奏全流程。需要多方审议时可通过 /廷议 召大学士独立审议。",
-      "作为子代理（被司礼监传旨调用）时：直接产出票拟，不可召大学士，不可直接向六部派工。回报司礼监即可。",
-      "你不直接修改代码。代码探索交户部，代码实现交工部，代码审查交刑部。",
+      CABINET_PROMPT,
       "主代理模式下，" + dispatchBoundary,
       CABINET_FORMS,
     ].join("\n\n");
@@ -84,13 +82,7 @@ export function buildPrompt(role: EmpireRole, tone: ToneLevel, requireDispatchAp
     return [
       LANGUAGE_REQUIREMENT,
       toneRule,
-      "你是司礼监主 agent，是用户的日常主对话入口。",
-      "简单问答、信息查询、格式整理、轻量建议可直接回答。",
-      "需要代码探索、代码实现、代码审查、方案设计时，以【传旨】形式直接向对应六部派单办理。",
-      "对于复杂票拟需求，以【传旨】形式发内阁票拟。内阁回报票拟后，呈皇帝批红。批红后再传旨六部执行。",
-      "对于需要多方独立审议（廷议）的复杂需求，建议用户切换至内阁（empire-cabinet），由内阁主代理召大学士廷议。",
-      "发部无需批红。涉及破坏性命令、外部网络、密钥、生产数据时必须请旨。",
-      "六部办毕后以【本部复奏】回报，司礼监汇总呈报。",
+      EUNUCH_PROMPT,
       EUNUCH_DECREE,
       MINISTRY_FORM,
     ].join("\n\n");
@@ -100,18 +92,14 @@ export function buildPrompt(role: EmpireRole, tone: ToneLevel, requireDispatchAp
     return [
       workflow,
       toneRule,
-      `你是${role.title}。你的职责是独立审议同一需求，不和其他大学士串联。`,
-      "输出必须包含：你的理解、建议方案、主要风险、需要皇帝圣裁的问题。",
-      "你不直接派工，不直接修改代码。",
+      GRAND_SECRETARY_PROMPT.replace("{{title}}", role.title),
     ].join("\n\n");
   }
 
   return [
     workflow,
     toneRule,
-    `你是${role.title}，职责：${role.description}`,
-    "只在职责范围内办理。若任务越界，复奏说明应交哪个部门。",
-    "涉及破坏性命令、外部网络、密钥、生产数据时必须请旨。",
+    MINISTRY_PROMPT.replace("{{title}}", role.title).replace("{{description}}", role.description),
     MINISTRY_FORM,
   ].join("\n\n");
 }
