@@ -4,7 +4,17 @@ import { join } from "node:path";
 const PROMPTS_DIR = join(import.meta.dirname, "..", "src", "prompts");
 const OUTPUT = join(PROMPTS_DIR, "generated.ts");
 
-const PROMPT_FILES = ["eunuch", "cabinet", "grand-secretary", "ministry"] as const;
+const PROMPT_FILES = [
+  "eunuch",
+  "cabinet",
+  "grand-secretary",
+  "ministry-personnel",
+  "ministry-revenue",
+  "ministry-rites",
+  "ministry-war",
+  "ministry-justice",
+  "ministry-works",
+] as const;
 
 function readPrompt(name: string): string {
   const filePath = join(PROMPTS_DIR, `${name}.md`);

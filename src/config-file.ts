@@ -4,16 +4,20 @@ import { join } from "node:path";
 import type { PluginOptions } from "@opencode-ai/plugin";
 import type { AgentOptionsMap, EmpireAgentOptions, EmpireOptions, EmpireRoleId } from "./types.js";
 
+function resolveHomeDirectory(): string {
+  return process.env.HOME ?? homedir();
+}
+
 export interface LoadEmpireOptionsInput {
   home?: string;
   tupleOptions?: PluginOptions;
 }
 
-export function getOpencodeConfigDir(home = homedir()): string {
+export function getOpencodeConfigDir(home = resolveHomeDirectory()): string {
   return join(home, ".config", "opencode");
 }
 
-export function getEmpireConfigPath(home = homedir()): string {
+export function getEmpireConfigPath(home = resolveHomeDirectory()): string {
   return join(getOpencodeConfigDir(home), "opencode-empire.json");
 }
 
@@ -56,7 +60,7 @@ function mergeEmpireOptions(fileOptions: EmpireOptions, tupleOptions: EmpireOpti
 }
 
 export async function loadEmpireOptions(input: LoadEmpireOptionsInput = {}): Promise<EmpireOptions> {
-  const home = input.home ?? homedir();
+  const home = input.home ?? resolveHomeDirectory();
   const tupleOptions = (input.tupleOptions ?? {}) as EmpireOptions;
 
   try {
