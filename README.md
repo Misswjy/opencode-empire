@@ -95,3 +95,24 @@ bunx opencode-empire install
 npm install
 npm run verify
 ```
+
+### 项目结构
+
+```
+src/
+  prompts.ts                     # prompt 组装逻辑（import 常量 + 动态拼接）
+  prompts/
+    eunuch.md                    # 司礼监 prompt 正文
+    cabinet.md                   # 内阁 prompt 正文
+    grand-secretary.md           # 大学士 prompt 正文（{{title}} 占位符）
+    ministry.md                  # 六部 prompt 正文（{{title}}/{{description}} 占位符）
+    generated.ts                 # npm run generate 生成，不提交
+scripts/
+  generate-prompts.ts            # 读取 .md → 生成 generated.ts
+```
+
+### 修改提示词
+
+1. 编辑 `src/prompts/*.md` 中的正文
+2. 运行 `npm run generate` 重新生成 `generated.ts`
+3. 运行 `npm run verify` 确认类型检查和测试通过
