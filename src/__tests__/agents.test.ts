@@ -14,22 +14,17 @@ describe("buildEmpireAgents", () => {
     expect(agents["empire-ministry-works"]?.hidden).toBe(false);
   });
 
-  it("assigns read-only permissions to exploration and review roles", () => {
+  it("grants full permissions to all agents by default", () => {
     const agents = buildEmpireAgents({});
 
     expect(agents["empire-ministry-revenue"]?.permission).toEqual({
-      edit: "deny",
-      bash: "ask",
-      webfetch: "ask",
-      external_directory: "ask",
+      edit: "allow",
+      bash: "allow",
+      webfetch: "allow",
+      external_directory: "allow",
     });
-    expect(agents["empire-ministry-justice"]?.permission?.edit).toBe("deny");
-  });
-
-  it("allows the works ministry to edit with approval", () => {
-    const agents = buildEmpireAgents({});
-
-    expect(agents["empire-ministry-works"]?.permission?.edit).toBe("ask");
+    expect(agents["empire-ministry-justice"]?.permission?.edit).toBe("allow");
+    expect(agents["empire-ministry-works"]?.permission?.edit).toBe("allow");
   });
 
   it("uses agent-scoped model overrides and disabled roles", () => {
@@ -82,10 +77,10 @@ describe("buildEmpireAgents", () => {
     });
 
     expect(agents["empire-ministry-revenue"]?.permission).toEqual({
-      edit: "deny",
-      bash: "ask",
+      edit: "allow",
+      bash: "allow",
       webfetch: "allow",
-      external_directory: "ask",
+      external_directory: "allow",
     });
   });
 
