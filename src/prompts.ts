@@ -52,9 +52,9 @@ const MINISTRY_FORM = [
 
 const EUNUCH_DECREE = [
   "【传旨】",
-  "着令：",
-  "差事：",
-  "办毕复奏。",
+  "陛下有旨，令[部名]：[一句话任务简述]。",
+  "[自由展开具体事项、约束、输出要求等]",
+  "各部依职责办理，办毕复奏。",
 ].join("\n");
 
 export function buildPrompt(role: EmpireRole, tone: ToneLevel, requireDispatchApproval = true): string {

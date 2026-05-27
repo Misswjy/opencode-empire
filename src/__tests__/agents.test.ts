@@ -84,7 +84,7 @@ describe("buildEmpireAgents", () => {
 
     expect(prompt).toContain("日常主对话入口");
     expect(prompt).toContain("【传旨】");
-    expect(prompt).toContain("着令：");
+    expect(prompt).toContain("陛下有旨，令");
     expect(prompt).toContain("办毕复奏。");
     expect(prompt).toContain("发部无需批红");
   });

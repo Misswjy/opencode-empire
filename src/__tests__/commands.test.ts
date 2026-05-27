@@ -17,7 +17,7 @@ describe("buildEmpireCommands", () => {
   it("uses a court deliberation template that preserves user arguments", () => {
     const commands = buildEmpireCommands();
 
-    expect(commands["廷议"]?.template).toContain("三位隐藏内阁大学士");
+    expect(commands["廷议"]?.template).toContain("三位内阁大学士");
     expect(commands["廷议"]?.template).toContain("$ARGUMENTS");
   });
 });
