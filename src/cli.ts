@@ -30,7 +30,7 @@ export async function runCli(args: string[], dependencies: CliDependencies): Pro
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   process.exitCode = await runCli(process.argv.slice(2), {
     install: installEmpireConfig,
-    log: console.log,
+    log: console.error,
     error: console.error,
   });
 }
