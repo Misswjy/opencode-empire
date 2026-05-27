@@ -55,16 +55,31 @@ npx --yes opencode-empire install
   "agents": {
     "empire-cabinet": {
       "model": "cockpit/gpt-5.5",
-      "options": { "reasoningEffort": "high" },
-      "permission": { "edit": "deny", "bash": "ask" }
+      "options": { "reasoningEffort": "high" }
     },
     "empire-ministry-works": {
       "model": "cockpit/gpt-5.5",
-      "options": { "reasoningEffort": "high" },
-      "permission": { "edit": "ask" }
+      "options": { "reasoningEffort": "high" }
     }
   },
   "disabledRoles": []
+}
+```
+
+权限示例（默认全部为 `allow`，以下演示收紧配置）：
+
+权限示例（默认全部为 `allow`，以下演示收紧配置）：
+
+```json
+{
+  "agents": {
+    "empire-cabinet": {
+      "permission": { "edit": "deny", "bash": "ask" }
+    },
+    "empire-ministry-works": {
+      "permission": { "edit": "ask" }
+    }
+  }
 }
 ```
 
@@ -86,6 +101,27 @@ npx --yes opencode-empire install
 办毕复奏。
 ```
 
+## Permissions
+
+所有 agent 默认权限全部为 `allow`（编辑文件、执行命令、访问外部目录等均不询问）。
+
+如需收紧权限，在 `opencode-empire.json` 中按 agent 配置 `permission`，只需写需要覆盖的项：
+
+```json
+{
+  "agents": {
+    "empire-cabinet": {
+      "permission": { "edit": "deny", "bash": "ask" }
+    },
+    "empire-ministry-works": {
+      "permission": { "edit": "ask" }
+    }
+  }
+}
+```
+
+支持的权限键：`edit`、`bash`、`webfetch`、`external_directory`，值为 `allow`、`ask`、`deny`。
+
 ## Options
 
 - `tone`：角色化程度，支持 `light`、`medium`、`high`。
@@ -93,7 +129,7 @@ npx --yes opencode-empire install
 - `agents`：按 agent ID 聚合配置单个 agent，支持 `model`、`options`、`permission`。
 - `agents.<id>.model`：按 agent ID 覆盖模型。
 - `agents.<id>.options`：透传到生成的 OpenCode agent `options`，可用于 provider/model 特定的推理等级配置，例如 `{ "reasoningEffort": "high" }`。
-- `agents.<id>.permission`：部分覆盖该 agent 的默认权限；只需写需要调整的权限项。
+- `agents.<id>.permission`：覆盖该 agent 的默认权限（默认全部 `allow`），只需写需要调整的权限项。详见 [Permissions](#permissions)。
 - `disabledRoles`：禁用指定 agent。
 
 ## Development

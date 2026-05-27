@@ -6,12 +6,7 @@ import type { EmpireOptions, EmpireRoleId } from "./types.js";
 type AgentConfig = NonNullable<NonNullable<Config["agent"]>[string]>;
 
 function permissionFor(_canEdit: boolean): AgentConfig["permission"] {
-  return {
-    edit: "allow",
-    bash: "allow",
-    webfetch: "allow",
-    external_directory: "allow",
-  };
+  return { "*": "allow" } as AgentConfig["permission"];
 }
 
 export function normalizeOptions(options: EmpireOptions): Required<EmpireOptions> {

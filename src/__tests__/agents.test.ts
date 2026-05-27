@@ -18,13 +18,9 @@ describe("buildEmpireAgents", () => {
     const agents = buildEmpireAgents({});
 
     expect(agents["empire-ministry-revenue"]?.permission).toEqual({
-      edit: "allow",
-      bash: "allow",
-      webfetch: "allow",
-      external_directory: "allow",
+      "*": "allow",
     });
-    expect(agents["empire-ministry-justice"]?.permission?.edit).toBe("allow");
-    expect(agents["empire-ministry-works"]?.permission?.edit).toBe("allow");
+    expect(agents["empire-ministry-justice"]?.permission?.edit).toBeUndefined();
   });
 
   it("uses agent-scoped model overrides and disabled roles", () => {
@@ -77,10 +73,8 @@ describe("buildEmpireAgents", () => {
     });
 
     expect(agents["empire-ministry-revenue"]?.permission).toEqual({
-      edit: "allow",
-      bash: "allow",
+      "*": "allow",
       webfetch: "allow",
-      external_directory: "allow",
     });
   });
 

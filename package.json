@@ -1,6 +1,6 @@
 {
   "name": "opencode-empire",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "OpenCode imperial multi-agent orchestration plugin.",
   "type": "module",
   "main": "./dist/index.js",
