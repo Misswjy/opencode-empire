@@ -28,6 +28,23 @@
         "empire-ministry-works": { "type": "string" }
       },
       "additionalProperties": false
+    },
+    "agents": {
+      "type": "object",
+      "properties": {
+        "empire-cabinet": { "$ref": "#/$defs/EmpireAgentOptions" },
+        "empire-eunuch": { "$ref": "#/$defs/EmpireAgentOptions" },
+        "empire-grand-secretary-a": { "$ref": "#/$defs/EmpireAgentOptions" },
+        "empire-grand-secretary-b": { "$ref": "#/$defs/EmpireAgentOptions" },
+        "empire-grand-secretary-c": { "$ref": "#/$defs/EmpireAgentOptions" },
+        "empire-ministry-personnel": { "$ref": "#/$defs/EmpireAgentOptions" },
+        "empire-ministry-revenue": { "$ref": "#/$defs/EmpireAgentOptions" },
+        "empire-ministry-rites": { "$ref": "#/$defs/EmpireAgentOptions" },
+        "empire-ministry-war": { "$ref": "#/$defs/EmpireAgentOptions" },
+        "empire-ministry-justice": { "$ref": "#/$defs/EmpireAgentOptions" },
+        "empire-ministry-works": { "$ref": "#/$defs/EmpireAgentOptions" }
+      },
+      "additionalProperties": false
     }
   },
   "additionalProperties": false,
@@ -47,6 +64,32 @@
         "empire-ministry-justice",
         "empire-ministry-works"
       ]
+    },
+    "PermissionAction": {
+      "type": "string",
+      "enum": ["ask", "allow", "deny"]
+    },
+    "PermissionRule": {
+      "oneOf": [
+        { "$ref": "#/$defs/PermissionAction" },
+        {
+          "type": "object",
+          "additionalProperties": { "$ref": "#/$defs/PermissionAction" }
+        }
+      ]
+    },
+    "Permission": {
+      "type": "object",
+      "additionalProperties": { "$ref": "#/$defs/PermissionRule" }
+    },
+    "EmpireAgentOptions": {
+      "type": "object",
+      "properties": {
+        "model": { "type": "string" },
+        "options": { "type": "object" },
+        "permission": { "$ref": "#/$defs/Permission" }
+      },
+      "additionalProperties": false
     }
   }
 }

@@ -2,7 +2,7 @@ import { readFile } from "node:fs/promises";
 import { homedir } from "node:os";
 import { join } from "node:path";
 import type { PluginOptions } from "@opencode-ai/plugin";
-import type { EmpireOptions } from "./types.js";
+import type { AgentOptionsMap, EmpireAgentOptions, EmpireOptions, EmpireRoleId } from "./types.js";
 
 export interface LoadEmpireOptionsInput {
   home?: string;
@@ -17,6 +17,35 @@ export function getEmpireConfigPath(home = homedir()): string {
   return join(getOpencodeConfigDir(home), "opencode-empire.json");
 }
 
+function mergeAgentOptions(fileAgent: EmpireAgentOptions = {}, tupleAgent: EmpireAgentOptions = {}): EmpireAgentOptions {
+  return {
+    ...fileAgent,
+    ...tupleAgent,
+    options: {
+      ...(fileAgent.options ?? {}),
+      ...(tupleAgent.options ?? {}),
+    },
+    permission: {
+      ...((typeof fileAgent.permission === "object" ? fileAgent.permission : {}) ?? {}),
+      ...((typeof tupleAgent.permission === "object" ? tupleAgent.permission : {}) ?? {}),
+    },
+  };
+}
+
+function mergeAgents(fileAgents: AgentOptionsMap = {}, tupleAgents: AgentOptionsMap = {}): AgentOptionsMap {
+  const roleIds = new Set<EmpireRoleId>([
+    ...(Object.keys(fileAgents) as EmpireRoleId[]),
+    ...(Object.keys(tupleAgents) as EmpireRoleId[]),
+  ]);
+  const result: AgentOptionsMap = {};
+
+  for (const roleId of roleIds) {
+    result[roleId] = mergeAgentOptions(fileAgents[roleId], tupleAgents[roleId]);
+  }
+
+  return result;
+}
+
 function mergeEmpireOptions(fileOptions: EmpireOptions, tupleOptions: EmpireOptions): EmpireOptions {
   return {
     ...fileOptions,
@@ -25,6 +54,7 @@ function mergeEmpireOptions(fileOptions: EmpireOptions, tupleOptions: EmpireOpti
       ...(fileOptions.models ?? {}),
       ...(tupleOptions.models ?? {}),
     },
+    agents: mergeAgents(fileOptions.agents, tupleOptions.agents),
     disabledRoles: tupleOptions.disabledRoles ?? fileOptions.disabledRoles,
   };
 }

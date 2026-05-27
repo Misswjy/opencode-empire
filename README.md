@@ -65,6 +65,18 @@ npx --yes opencode-empire install
     "empire-ministry-justice": "cockpit/gpt-5.5",
     "empire-ministry-works": "cockpit/gpt-5.5"
   },
+  "agents": {
+    "empire-cabinet": {
+      "model": "cockpit/gpt-5.5",
+      "options": { "reasoningEffort": "high" },
+      "permission": { "edit": "deny", "bash": "ask" }
+    },
+    "empire-ministry-works": {
+      "model": "cockpit/gpt-5.5",
+      "options": { "reasoningEffort": "high" },
+      "permission": { "edit": "ask" }
+    }
+  },
   "disabledRoles": []
 }
 ```
@@ -91,7 +103,10 @@ npx --yes opencode-empire install
 
 - `tone`：角色化程度，支持 `light`、`medium`、`high`。
 - `requireDispatchApproval`：是否要求派工前再次确认。默认为 `true`；设为 `false` 时，内阁可在已批红票拟范围内直接发部办理。
-- `models`：按 agent ID 覆盖模型。
+- `models`：按 agent ID 覆盖模型。保留用于兼容；如果同时配置 `agents.<id>.model`，则 `agents.<id>.model` 优先。
+- `agents`：按 agent ID 聚合配置单个 agent，支持 `model`、`options`、`permission`。
+- `agents.<id>.options`：透传到生成的 OpenCode agent `options`，可用于 provider/model 特定的推理等级配置，例如 `{ "reasoningEffort": "high" }`。
+- `agents.<id>.permission`：部分覆盖该 agent 的默认权限；只需写需要调整的权限项。
 - `disabledRoles`：禁用指定 agent。
 
 ## Development

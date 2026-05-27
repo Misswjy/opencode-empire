@@ -46,6 +46,50 @@ describe("buildEmpireAgents", () => {
     expect(agents["empire-ministry-war"]).toBeUndefined();
   });
 
+  it("uses agent-scoped model over legacy model overrides", () => {
+    const agents = buildEmpireAgents({
+      models: {
+        "empire-cabinet": "cockpit/gpt-5.4",
+      },
+      agents: {
+        "empire-cabinet": {
+          model: "cockpit/gpt-5.5",
+        },
+      },
+    });
+
+    expect(agents["empire-cabinet"]?.model).toBe("cockpit/gpt-5.5");
+  });
+
+  it("passes agent-scoped options to generated agents", () => {
+    const agents = buildEmpireAgents({
+      agents: {
+        "empire-cabinet": {
+          options: { reasoningEffort: "high" },
+        },
+      },
+    });
+
+    expect(agents["empire-cabinet"]?.options).toEqual({ reasoningEffort: "high" });
+  });
+
+  it("shallow-merges agent-scoped permissions with defaults", () => {
+    const agents = buildEmpireAgents({
+      agents: {
+        "empire-ministry-revenue": {
+          permission: { webfetch: "allow" },
+        },
+      },
+    });
+
+    expect(agents["empire-ministry-revenue"]?.permission).toEqual({
+      edit: "deny",
+      bash: "ask",
+      webfetch: "allow",
+      external_directory: "ask",
+    });
+  });
+
   it("includes eunuch decree format and daily primary role", () => {
     const agents = buildEmpireAgents({});
     const prompt = agents["empire-eunuch"]?.prompt ?? "";

@@ -17,6 +17,7 @@ function permissionFor(canEdit: boolean): AgentConfig["permission"] {
 export function normalizeOptions(options: EmpireOptions): Required<EmpireOptions> {
   return {
     models: options.models ?? {},
+    agents: options.agents ?? {},
     tone: options.tone ?? DEFAULT_TONE,
     requireDispatchApproval: options.requireDispatchApproval ?? DEFAULT_REQUIRE_DISPATCH_APPROVAL,
     disabledRoles: options.disabledRoles ?? [],
@@ -33,15 +34,27 @@ export function buildEmpireAgents(options: EmpireOptions): NonNullable<Config["a
       continue;
     }
 
-    agents[role.id] = {
+    const agentOptions = normalized.agents[role.id];
+    const permission = {
+      ...permissionFor(role.canEdit),
+      ...agentOptions?.permission,
+    };
+
+    const config: AgentConfig = {
       description: role.description,
       mode: role.mode,
       hidden: role.hidden ?? false,
-      model: normalized.models[role.id] ?? role.defaultModel,
+      model: agentOptions?.model ?? normalized.models[role.id] ?? role.defaultModel,
       prompt: buildPrompt(role, normalized.tone, normalized.requireDispatchApproval),
       temperature: 0.1,
-      permission: permissionFor(role.canEdit),
+      permission,
     };
+
+    if (agentOptions?.options) {
+      config.options = agentOptions.options;
+    }
+
+    agents[role.id] = config;
   }
 
   return agents;

@@ -1,3 +1,5 @@
+import type { Config } from "@opencode-ai/plugin";
+
 export type ToneLevel = "light" | "medium" | "high";
 
 export type EmpireRoleId =
@@ -15,8 +17,19 @@ export type EmpireRoleId =
 
 export type ModelMap = Partial<Record<EmpireRoleId, string>>;
 
+type AgentConfig = NonNullable<NonNullable<Config["agent"]>[string]>;
+
+export interface EmpireAgentOptions {
+  model?: string;
+  options?: AgentConfig["options"];
+  permission?: AgentConfig["permission"];
+}
+
+export type AgentOptionsMap = Partial<Record<EmpireRoleId, EmpireAgentOptions>>;
+
 export interface EmpireOptions {
   models?: ModelMap;
+  agents?: AgentOptionsMap;
   tone?: ToneLevel;
   requireDispatchApproval?: boolean;
   disabledRoles?: EmpireRoleId[];

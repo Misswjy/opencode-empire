@@ -56,6 +56,45 @@ describe("loadEmpireOptions", () => {
     });
   });
 
+  it("merges file and tuple agent-scoped config per agent", async () => {
+    const home = await makeHome();
+    await writeFile(
+      getEmpireConfigPath(home),
+      JSON.stringify({
+        agents: {
+          "empire-cabinet": {
+            model: "cockpit/gpt-5.4",
+            options: { reasoningEffort: "medium", cache: true },
+            permission: { bash: "ask", edit: "deny" },
+          },
+        },
+      }),
+    );
+
+    await expect(
+      loadEmpireOptions({
+        home,
+        tupleOptions: {
+          agents: {
+            "empire-cabinet": {
+              model: "cockpit/gpt-5.5",
+              options: { reasoningEffort: "high" },
+              permission: { webfetch: "allow" },
+            },
+          },
+        },
+      }),
+    ).resolves.toMatchObject({
+      agents: {
+        "empire-cabinet": {
+          model: "cockpit/gpt-5.5",
+          options: { reasoningEffort: "high", cache: true },
+          permission: { bash: "ask", edit: "deny", webfetch: "allow" },
+        },
+      },
+    });
+  });
+
   it("throws a clear error for invalid JSON", async () => {
     const home = await makeHome();
     await writeFile(getEmpireConfigPath(home), "{");

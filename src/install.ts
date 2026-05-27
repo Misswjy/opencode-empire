@@ -30,6 +30,19 @@ const DEFAULT_EMPIRE_CONFIG = {
     "empire-ministry-justice": "cockpit/gpt-5.5",
     "empire-ministry-works": "cockpit/gpt-5.5",
   },
+  agents: {
+    "empire-cabinet": { model: "cockpit/gpt-5.4", options: { reasoningEffort: "medium" }, permission: { edit: "deny" } },
+    "empire-eunuch": { model: "cockpit/gpt-5.4", options: { reasoningEffort: "medium" }, permission: { edit: "deny" } },
+    "empire-grand-secretary-a": { model: "cockpit/gpt-5.5", options: { reasoningEffort: "high" }, permission: { edit: "deny" } },
+    "empire-grand-secretary-b": { model: "cockpit/gpt-5.4", options: { reasoningEffort: "medium" }, permission: { edit: "deny" } },
+    "empire-grand-secretary-c": { model: "opencode-go/deepseek-v4-flash", options: { reasoningEffort: "low" }, permission: { edit: "deny" } },
+    "empire-ministry-personnel": { model: "cockpit/gpt-5.4", options: { reasoningEffort: "medium" }, permission: { edit: "deny" } },
+    "empire-ministry-revenue": { model: "opencode-go/deepseek-v4-flash", options: { reasoningEffort: "low" }, permission: { edit: "deny" } },
+    "empire-ministry-rites": { model: "cockpit/gpt-5.4", options: { reasoningEffort: "medium" }, permission: { edit: "deny" } },
+    "empire-ministry-war": { model: "cockpit/gpt-5.4", options: { reasoningEffort: "medium" }, permission: { edit: "deny" } },
+    "empire-ministry-justice": { model: "cockpit/gpt-5.5", options: { reasoningEffort: "high" }, permission: { edit: "deny" } },
+    "empire-ministry-works": { model: "cockpit/gpt-5.5", options: { reasoningEffort: "high" }, permission: { edit: "ask" } },
+  },
   disabledRoles: [],
 };
 
