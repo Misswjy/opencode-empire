@@ -25,10 +25,13 @@ function buildSharedRules(requireDispatchApproval: boolean): string[] {
   ];
 }
 
-function buildWorkflow(requireDispatchApproval: boolean): string {
+function buildWorkflow(requireDispatchApproval: boolean, includeTicketPlan = true): string {
+  const flow = includeTicketPlan
+    ? "标准流程：听旨 -> 追问 -> 廷议（非必须，用户可选）-> 票拟 -> 待批红 -> 拟派工 -> 待发部 -> 办理中 -> 复奏。"
+    : "标准流程：听旨 -> 追问 -> 出方案/廷议（非必须，用户可选）-> 待批红 -> 拟派工 -> 待发部 -> 办理中 -> 复奏。";
   return [
     ...buildSharedRules(requireDispatchApproval),
-    "标准流程：听旨 -> 追问 -> 廷议 -> 票拟 -> 待批红 -> 拟派工 -> 待发部 -> 办理中 -> 复奏。",
+    flow,
   ].join("\n");
 }
 
@@ -166,7 +169,7 @@ export function buildPrompt(role: EmpireRole, tone: ToneLevel, requireDispatchAp
 
   if (role.id === "empire-eunuch") {
     return [
-      workflow,
+      buildWorkflow(requireDispatchApproval, false),
       toneRule,
       EUNUCH_PROMPT,
       EUNUCH_DECREE_FORM,
