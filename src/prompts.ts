@@ -104,14 +104,6 @@ const GRAND_SECRETARY_FORM = [
   "与常规看法不同之处：",
 ].join("\n");
 
-const MINISTRY_FORM = [
-  "【本部复奏】",
-  "臣等所办：",
-  "证据：",
-  "所遇风险：",
-  "请陛下裁定：",
-].join("\n");
-
 const EUNUCH_DECREE_FORM = [
   "【传旨】",
   "陛下有旨，令[部名]：[一句话任务简述]。",
@@ -179,7 +171,6 @@ export function buildPrompt(role: EmpireRole, tone: ToneLevel, requireDispatchAp
       EUNUCH_PROMPT,
       EUNUCH_DECREE_FORM,
       EUNUCH_SUMMARY_FORM,
-      MINISTRY_FORM,
     ].join("\n\n");
   }
 
