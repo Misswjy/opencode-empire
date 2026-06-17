@@ -54,15 +54,24 @@ npx --yes opencode-empire install
   "requireDispatchApproval": true,
   "agents": {
     "empire-cabinet": {
-      "model": "cockpit/gpt-5.5",
-      "options": { "reasoningEffort": "high" }
+      "model": "cockpit/gpt-5.5"
     },
     "empire-ministry-works": {
-      "model": "cockpit/gpt-5.5",
-      "options": { "reasoningEffort": "high" }
+      "model": "cockpit/gpt-5.5"
     }
   },
   "disabledRoles": []
+}
+```
+
+模型变体请配置在 OpenCode 全局配置 `~/.config/opencode/opencode.json` 的同名 agent 上：
+
+```json
+{
+  "agent": {
+    "empire-cabinet": { "variant": "high" },
+    "empire-ministry-works": { "variant": "high" }
+  }
 }
 ```
 
@@ -126,9 +135,9 @@ npx --yes opencode-empire install
 
 - `tone`：角色化程度，支持 `light`、`medium`、`high`。
 - `requireDispatchApproval`：是否要求派工前再次确认。默认为 `true`；设为 `false` 时，内阁可在已批红票拟范围内直接发部办理。
-- `agents`：按 agent ID 聚合配置单个 agent，支持 `model`、`options`、`permission`。
+- `agents`：按 agent ID 聚合配置单个 agent，支持 `model`、`permission`。
 - `agents.<id>.model`：按 agent ID 覆盖模型。
-- `agents.<id>.options`：透传到生成的 OpenCode agent `options`，可用于 provider/model 特定的推理等级配置，例如 `{ "reasoningEffort": "high" }`。
+- `agent.<id>.variant`：在 `opencode.json` 中按 agent ID 设置 OpenCode 模型变体；插件会保留同名 agent 的既有 `variant`。
 - `agents.<id>.permission`：覆盖该 agent 的默认权限（默认全部 `allow`），只需写需要调整的权限项。详见 [Permissions](#permissions)。
 - `disabledRoles`：禁用指定 agent。
 

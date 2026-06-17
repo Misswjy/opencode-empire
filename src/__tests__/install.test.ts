@@ -34,6 +34,7 @@ describe("installEmpireConfig", () => {
     expect(empireConfig.tone).toBe("medium");
     expect(empireConfig.models).toBeUndefined();
     expect(empireConfig.agents["empire-cabinet"].model).toBe("cockpit/gpt-5.4");
+    expect(empireConfig.agents["empire-cabinet"].options).toBeUndefined();
     expect(opencodeConfig.plugin).toContain("opencode-empire");
   });
 

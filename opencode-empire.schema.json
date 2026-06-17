@@ -69,7 +69,6 @@
       "type": "object",
       "properties": {
         "model": { "type": "string" },
-        "options": { "type": "object" },
         "permission": { "$ref": "#/$defs/Permission" }
       },
       "additionalProperties": false

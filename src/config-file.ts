@@ -25,10 +25,6 @@ function mergeAgentOptions(fileAgent: EmpireAgentOptions = {}, tupleAgent: Empir
   return {
     ...fileAgent,
     ...tupleAgent,
-    options: {
-      ...(fileAgent.options ?? {}),
-      ...(tupleAgent.options ?? {}),
-    },
     permission: {
       ...((typeof fileAgent.permission === "object" ? fileAgent.permission : {}) ?? {}),
       ...((typeof tupleAgent.permission === "object" ? tupleAgent.permission : {}) ?? {}),

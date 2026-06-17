@@ -18,7 +18,10 @@ export function normalizeOptions(options: EmpireOptions): Required<EmpireOptions
   };
 }
 
-export function buildEmpireAgents(options: EmpireOptions): NonNullable<Config["agent"]> {
+export function buildEmpireAgents(
+  options: EmpireOptions,
+  existingAgents: NonNullable<Config["agent"]> = {},
+): NonNullable<Config["agent"]> {
   const normalized = normalizeOptions(options);
   const disabled = new Set<EmpireRoleId>(normalized.disabledRoles);
   const agents: NonNullable<Config["agent"]> = {};
@@ -39,14 +42,11 @@ export function buildEmpireAgents(options: EmpireOptions): NonNullable<Config["a
       mode: role.mode,
       hidden: role.hidden ?? false,
       model: agentOptions?.model ?? role.defaultModel,
+      variant: existingAgents[role.id]?.variant,
       prompt: buildPrompt(role, normalized.tone, normalized.requireDispatchApproval),
       temperature: 0.1,
       permission,
     };
-
-    if (agentOptions?.options) {
-      config.options = agentOptions.options;
-    }
 
     agents[role.id] = config;
   }

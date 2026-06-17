@@ -19,7 +19,6 @@ type AgentConfig = NonNullable<NonNullable<Config["agent"]>[string]>;
 
 export interface EmpireAgentOptions {
   model?: string;
-  options?: AgentConfig["options"];
   permission?: AgentConfig["permission"];
 }
 

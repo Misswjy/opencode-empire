@@ -69,4 +69,20 @@ describe("plugin module", () => {
     expect(agents["empire-cabinet"]?.model).toBe("openai/gpt-5");
     expect(agents["empire-cabinet"]?.prompt).toContain("高度角色化");
   });
+
+  it("保留 opencode 配置中同名 agent 的 variant", async () => {
+    const hooks = await pluginModule.server(fakeInput() as never, {});
+    const config: Record<string, unknown> = {
+      agent: {
+        "empire-cabinet": { variant: "high" },
+        "empire-grand-secretary-c": { variant: "low" },
+      },
+    };
+
+    await hooks.config?.(config as never);
+
+    const agents = (config.agent ?? {}) as Record<string, Record<string, unknown>>;
+    expect(agents["empire-cabinet"]?.variant).toBe("high");
+    expect(agents["empire-grand-secretary-c"]?.variant).toBe("low");
+  });
 });

@@ -66,7 +66,7 @@ describe("loadEmpireOptions", () => {
     });
   });
 
-  it("merges file and tuple agent-scoped config per agent", async () => {
+  it("merges file and tuple agent-scoped model and permission config per agent", async () => {
     const home = await makeHome();
     await writeFile(
       getEmpireConfigPath(home),
@@ -74,7 +74,6 @@ describe("loadEmpireOptions", () => {
         agents: {
           "empire-cabinet": {
             model: "cockpit/gpt-5.4",
-            options: { reasoningEffort: "medium", cache: true },
             permission: { bash: "ask", edit: "deny" },
           },
         },
@@ -88,7 +87,6 @@ describe("loadEmpireOptions", () => {
           agents: {
             "empire-cabinet": {
               model: "cockpit/gpt-5.5",
-              options: { reasoningEffort: "high" },
               permission: { webfetch: "allow" },
             },
           },
@@ -98,7 +96,6 @@ describe("loadEmpireOptions", () => {
       agents: {
         "empire-cabinet": {
           model: "cockpit/gpt-5.5",
-          options: { reasoningEffort: "high", cache: true },
           permission: { bash: "ask", edit: "deny", webfetch: "allow" },
         },
       },

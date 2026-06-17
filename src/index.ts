@@ -18,7 +18,7 @@ const module: PluginModule = {
       async config(config) {
         (config as Record<string, unknown>).default_agent = "empire-eunuch";
         mergeEmpireConfig(config, {
-          agent: buildEmpireAgents(empireOptions),
+          agent: buildEmpireAgents(empireOptions, config.agent ?? {}),
           command: buildEmpireCommands(),
         });
       },

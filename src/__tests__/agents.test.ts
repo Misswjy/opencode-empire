@@ -52,16 +52,18 @@ describe("buildEmpireAgents", () => {
     expect(agents["empire-cabinet"]?.model).toBe("cockpit/gpt-5.4");
   });
 
-  it("passes agent-scoped options to generated agents", () => {
+  it("uses existing opencode agent variants", () => {
     const agents = buildEmpireAgents({
       agents: {
         "empire-cabinet": {
-          options: { reasoningEffort: "high" },
+          model: "cockpit/gpt-5.4",
         },
       },
-    });
+    }, {
+      "empire-cabinet": { variant: "high" },
+    } as never);
 
-    expect(agents["empire-cabinet"]?.options).toEqual({ reasoningEffort: "high" });
+    expect(agents["empire-cabinet"]?.variant).toBe("high");
   });
 
   it("shallow-merges agent-scoped permissions with defaults", () => {
