@@ -4,6 +4,8 @@ import { join } from "node:path";
 import type { PluginOptions } from "@opencode-ai/plugin";
 import type { AgentOptionsMap, EmpireAgentOptions, EmpireOptions, EmpireRoleId } from "./types.js";
 
+const REQUIRED_ROLES = new Set<EmpireRoleId>(["empire-eunuch", "empire-cabinet"]);
+
 function resolveHomeDirectory(): string {
   return process.env.HOME ?? homedir();
 }
@@ -21,14 +23,45 @@ export function getEmpireConfigPath(home = resolveHomeDirectory()): string {
   return join(getOpencodeConfigDir(home), "opencode-empire.json");
 }
 
+function isPlainObject(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function mergePermissionRule(fileRule: unknown, tupleRule: unknown): unknown {
+  if (isPlainObject(fileRule) && isPlainObject(tupleRule)) {
+    return { ...fileRule, ...tupleRule };
+  }
+  return tupleRule ?? fileRule;
+}
+
+function mergePermissions(
+  filePermission: EmpireAgentOptions["permission"],
+  tuplePermission: EmpireAgentOptions["permission"],
+): EmpireAgentOptions["permission"] {
+  const fileRules: Record<string, unknown> = isPlainObject(filePermission) ? filePermission : {};
+  const tupleRules: Record<string, unknown> = isPlainObject(tuplePermission) ? tuplePermission : {};
+  const result: Record<string, unknown> = {};
+
+  for (const key of new Set([...Object.keys(fileRules), ...Object.keys(tupleRules)])) {
+    result[key] = mergePermissionRule(fileRules[key], tupleRules[key]);
+  }
+
+  return result as EmpireAgentOptions["permission"];
+}
+
+function assertRequiredRolesEnabled(options: EmpireOptions): void {
+  for (const roleId of options.disabledRoles ?? []) {
+    if (REQUIRED_ROLES.has(roleId)) {
+      throw new Error(`Cannot disable required opencode-empire role: ${roleId}`);
+    }
+  }
+}
+
 function mergeAgentOptions(fileAgent: EmpireAgentOptions = {}, tupleAgent: EmpireAgentOptions = {}): EmpireAgentOptions {
   return {
     ...fileAgent,
     ...tupleAgent,
-    permission: {
-      ...((typeof fileAgent.permission === "object" ? fileAgent.permission : {}) ?? {}),
-      ...((typeof tupleAgent.permission === "object" ? tupleAgent.permission : {}) ?? {}),
-    },
+    permission: mergePermissions(fileAgent.permission, tupleAgent.permission),
   };
 }
 
@@ -62,9 +95,12 @@ export async function loadEmpireOptions(input: LoadEmpireOptionsInput = {}): Pro
   try {
     const raw = await readFile(getEmpireConfigPath(home), "utf8");
     const fileOptions = JSON.parse(raw) as EmpireOptions;
-    return mergeEmpireOptions(fileOptions, tupleOptions);
+    const mergedOptions = mergeEmpireOptions(fileOptions, tupleOptions);
+    assertRequiredRolesEnabled(mergedOptions);
+    return mergedOptions;
   } catch (error) {
     if ((error as NodeJS.ErrnoException).code === "ENOENT") {
+      assertRequiredRolesEnabled(tupleOptions);
       return tupleOptions;
     }
     if (error instanceof SyntaxError) {

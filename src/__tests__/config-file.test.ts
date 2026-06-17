@@ -102,12 +102,66 @@ describe("loadEmpireOptions", () => {
     });
   });
 
+  it("deep-merges nested permission rules per agent", async () => {
+    const home = await makeHome();
+    await writeFile(
+      getEmpireConfigPath(home),
+      JSON.stringify({
+        agents: {
+          "empire-cabinet": {
+            permission: { bash: { "*": "ask", "rm -rf *": "deny" }, edit: "deny" },
+          },
+        },
+      }),
+    );
+
+    await expect(
+      loadEmpireOptions({
+        home,
+        tupleOptions: {
+          agents: {
+            "empire-cabinet": {
+              permission: { bash: { "npm test": "allow" }, webfetch: "allow" },
+            },
+          },
+        },
+      }),
+    ).resolves.toMatchObject({
+      agents: {
+        "empire-cabinet": {
+          permission: {
+            bash: { "*": "ask", "rm -rf *": "deny", "npm test": "allow" },
+            edit: "deny",
+            webfetch: "allow",
+          },
+        },
+      },
+    });
+  });
+
   it("throws a clear error for invalid JSON", async () => {
     const home = await makeHome();
     await writeFile(getEmpireConfigPath(home), "{");
 
     await expect(loadEmpireOptions({ home, tupleOptions: {} })).rejects.toThrow(
       "Failed to parse opencode-empire config",
+    );
+  });
+
+  it("rejects disabling required roles", async () => {
+    const home = await makeHome();
+    await writeFile(getEmpireConfigPath(home), JSON.stringify({ disabledRoles: ["empire-eunuch"] }));
+
+    await expect(loadEmpireOptions({ home, tupleOptions: {} })).rejects.toThrow(
+      "Cannot disable required opencode-empire role: empire-eunuch",
+    );
+  });
+
+  it("rejects disabling required roles from tuple options", async () => {
+    const home = await makeHome();
+
+    await expect(loadEmpireOptions({ home, tupleOptions: { disabledRoles: ["empire-cabinet"] } })).rejects.toThrow(
+      "Cannot disable required opencode-empire role: empire-cabinet",
     );
   });
 });

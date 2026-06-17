@@ -18,24 +18,29 @@ const DEFAULT_EMPIRE_CONFIG = {
   tone: "medium",
   requireDispatchApproval: true,
   agents: {
-    "empire-cabinet": { model: "cockpit/gpt-5.4" },
-    "empire-eunuch": { model: "cockpit/gpt-5.4" },
-    "empire-grand-secretary-a": { model: "cockpit/gpt-5.5" },
-    "empire-grand-secretary-b": { model: "cockpit/gpt-5.4" },
-    "empire-grand-secretary-c": { model: "opencode-go/deepseek-v4-flash" },
-    "empire-ministry-personnel": { model: "cockpit/gpt-5.4" },
-    "empire-ministry-revenue": { model: "opencode-go/deepseek-v4-flash" },
-    "empire-ministry-rites": { model: "cockpit/gpt-5.4" },
-    "empire-ministry-war": { model: "cockpit/gpt-5.4" },
-    "empire-ministry-justice": { model: "cockpit/gpt-5.5" },
-    "empire-ministry-works": { model: "cockpit/gpt-5.5" },
+    "empire-cabinet": { model: "cockpit/gpt-5.4", permission: { edit: "deny", bash: "ask" } },
+    "empire-eunuch": { model: "cockpit/gpt-5.4", permission: { edit: "deny", bash: "ask" } },
+    "empire-grand-secretary-a": { model: "cockpit/gpt-5.5", permission: { edit: "deny", bash: "ask" } },
+    "empire-grand-secretary-b": { model: "cockpit/gpt-5.4", permission: { edit: "deny", bash: "ask" } },
+    "empire-grand-secretary-c": { model: "opencode-go/deepseek-v4-flash", permission: { edit: "deny", bash: "ask" } },
+    "empire-ministry-personnel": { model: "cockpit/gpt-5.4", permission: { edit: "deny", bash: "ask" } },
+    "empire-ministry-revenue": { model: "opencode-go/deepseek-v4-flash", permission: { edit: "deny", bash: "ask" } },
+    "empire-ministry-rites": { model: "cockpit/gpt-5.4", permission: { edit: "deny", bash: "ask" } },
+    "empire-ministry-war": { model: "cockpit/gpt-5.4", permission: { edit: "deny", bash: "ask" } },
+    "empire-ministry-justice": { model: "cockpit/gpt-5.5", permission: { edit: "deny", bash: "ask" } },
+    "empire-ministry-works": { model: "cockpit/gpt-5.5", permission: { edit: "ask" } },
   },
   disabledRoles: [],
 };
 
+function parseJsonc(raw: string): unknown {
+  const withoutComments = raw.replace(/\/\*[\s\S]*?\*\/|(^|[^:])\/\/.*$/gm, "$1");
+  return JSON.parse(withoutComments.replace(/,\s*([}\]])/g, "$1"));
+}
+
 async function readJsonIfExists<T>(path: string, fallback: T): Promise<T> {
   try {
-    return JSON.parse(await readFile(path, "utf8")) as T;
+    return parseJsonc(await readFile(path, "utf8")) as T;
   } catch (error) {
     if ((error as NodeJS.ErrnoException).code === "ENOENT") {
       return fallback;

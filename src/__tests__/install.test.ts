@@ -35,7 +35,30 @@ describe("installEmpireConfig", () => {
     expect(empireConfig.models).toBeUndefined();
     expect(empireConfig.agents["empire-cabinet"].model).toBe("cockpit/gpt-5.4");
     expect(empireConfig.agents["empire-cabinet"].options).toBeUndefined();
+    expect(empireConfig.agents["empire-cabinet"].permission).toEqual({ edit: "deny", bash: "ask" });
+    expect(empireConfig.agents["empire-ministry-works"].permission).toEqual({ edit: "ask" });
     expect(opencodeConfig.plugin).toContain("opencode-empire");
+  });
+
+  it("preserves JSONC comments and trailing commas in existing opencode config", async () => {
+    const home = await makeHome();
+    const opencodePath = join(home, ".config", "opencode", "opencode.json");
+    await writeFile(
+      opencodePath,
+      `{
+  // user preferred model
+  "model": "openai/gpt-5",
+  "plugin": ["existing-plugin"],
+}
+`,
+    );
+
+    await installEmpireConfig({ home });
+
+    expect(JSON.parse(await readFile(opencodePath, "utf8"))).toMatchObject({
+      model: "openai/gpt-5",
+      plugin: ["existing-plugin", "opencode-empire"],
+    });
   });
 
   it("does not overwrite an existing dedicated plugin config", async () => {

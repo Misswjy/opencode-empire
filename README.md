@@ -57,7 +57,8 @@ npx --yes opencode-empire install
       "model": "cockpit/gpt-5.5"
     },
     "empire-ministry-works": {
-      "model": "cockpit/gpt-5.5"
+      "model": "cockpit/gpt-5.5",
+      "permission": { "edit": "ask" }
     }
   },
   "disabledRoles": []
@@ -75,9 +76,9 @@ npx --yes opencode-empire install
 }
 ```
 
-权限示例（默认全部为 `allow`，以下演示收紧配置）：
+安装器生成的默认 `opencode-empire.json` 会收紧非工部权限，例如非工部 `edit: deny`、`bash: ask`，工部 `edit: ask`。如果通过插件 tuple 直接启用且未创建专属配置，则运行时默认仍为全部 `allow`。
 
-权限示例（默认全部为 `allow`，以下演示收紧配置）：
+权限示例（以下演示按 agent 覆盖配置）：
 
 ```json
 {
@@ -112,7 +113,7 @@ npx --yes opencode-empire install
 
 ## Permissions
 
-所有 agent 默认权限全部为 `allow`（编辑文件、执行命令、访问外部目录等均不询问）。
+安装器生成的专属配置会默认收紧权限；如果未使用安装器创建 `opencode-empire.json`，插件运行时默认权限全部为 `allow`。
 
 如需收紧权限，在 `opencode-empire.json` 中按 agent 配置 `permission`，只需写需要覆盖的项：
 
@@ -138,8 +139,8 @@ npx --yes opencode-empire install
 - `agents`：按 agent ID 聚合配置单个 agent，支持 `model`、`permission`。
 - `agents.<id>.model`：按 agent ID 覆盖模型。
 - `agent.<id>.variant`：在 `opencode.json` 中按 agent ID 设置 OpenCode 模型变体；插件会保留同名 agent 的既有 `variant`。
-- `agents.<id>.permission`：覆盖该 agent 的默认权限（默认全部 `allow`），只需写需要调整的权限项。详见 [Permissions](#permissions)。
-- `disabledRoles`：禁用指定 agent。
+- `agents.<id>.permission`：覆盖该 agent 的权限配置，只需写需要调整的权限项。详见 [Permissions](#permissions)。
+- `disabledRoles`：禁用指定 agent；`empire-eunuch` 与 `empire-cabinet` 为必需角色，不能禁用。
 
 ## Development
 
@@ -157,7 +158,7 @@ src/
     eunuch.md                    # 司礼监 prompt 正文
     cabinet.md                   # 内阁 prompt 正文
     grand-secretary.md           # 大学士 prompt 正文（{{title}} 占位符）
-    ministry.md                  # 六部 prompt 正文（{{title}}/{{description}} 占位符）
+    ministry-*.md                # 六部 prompt 正文（{{title}}/{{description}} 占位符）
     generated.ts                 # npm run generate 生成，不提交
 scripts/
   generate-prompts.ts            # 读取 .md → 生成 generated.ts
