@@ -36,7 +36,7 @@ describe("installEmpireConfig", () => {
     expect(empireConfig.agents["empire-cabinet"].model).toBe("cockpit/gpt-5.4");
     expect(empireConfig.agents["empire-cabinet"].options).toBeUndefined();
     expect(empireConfig.agents["empire-cabinet"].permission).toEqual({ edit: "deny", bash: "ask" });
-    expect(empireConfig.agents["empire-ministry-works"].permission).toEqual({ edit: "ask" });
+    expect(empireConfig.agents["empire-ministry-works"].permission).toEqual({ edit: "ask", task: "deny" });
     expect(opencodeConfig.plugin).toContain("opencode-empire");
   });
 

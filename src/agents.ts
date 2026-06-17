@@ -5,8 +5,11 @@ import type { EmpireOptions, EmpireRoleId } from "./types.js";
 
 type AgentConfig = NonNullable<NonNullable<Config["agent"]>[string]>;
 
-function permissionFor(_canEdit: boolean): AgentConfig["permission"] {
-  return { "*": "allow" } as AgentConfig["permission"];
+function permissionFor(roleMode: "primary" | "subagent" | "all"): AgentConfig["permission"] {
+  return {
+    "*": "allow",
+    ...(roleMode === "subagent" ? { task: "deny" } : {}),
+  } as AgentConfig["permission"];
 }
 
 export function normalizeOptions(options: EmpireOptions): Required<EmpireOptions> {
@@ -33,7 +36,7 @@ export function buildEmpireAgents(
 
     const agentOptions = normalized.agents[role.id];
     const permission = {
-      ...permissionFor(role.canEdit),
+      ...permissionFor(role.mode),
       ...agentOptions?.permission,
     };
 

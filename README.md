@@ -76,7 +76,7 @@ npx --yes opencode-empire install
 }
 ```
 
-安装器生成的默认 `opencode-empire.json` 会收紧非工部权限，例如非工部 `edit: deny`、`bash: ask`，工部 `edit: ask`。如果通过插件 tuple 直接启用且未创建专属配置，则运行时默认仍为全部 `allow`。
+安装器生成的默认 `opencode-empire.json` 会收紧非工部权限，例如非工部 `edit: deny`、`bash: ask`，工部 `edit: ask`，所有子代理 `task: deny`。如果通过插件 tuple 直接启用且未创建专属配置，则运行时默认仍为全部 `allow`，但子代理仍会被插件强制加上 `task: deny`。
 
 权限示例（以下演示按 agent 覆盖配置）：
 
@@ -113,7 +113,7 @@ npx --yes opencode-empire install
 
 ## Permissions
 
-安装器生成的专属配置会默认收紧权限；如果未使用安装器创建 `opencode-empire.json`，插件运行时默认权限全部为 `allow`。
+安装器生成的专属配置会默认收紧权限；如果未使用安装器创建 `opencode-empire.json`，插件运行时默认权限全部为 `allow`，但 `mode: subagent` 的 agent 会强制带 `task: deny`，不可再新建子代理。
 
 如需收紧权限，在 `opencode-empire.json` 中按 agent 配置 `permission`，只需写需要覆盖的项：
 

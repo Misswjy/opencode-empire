@@ -2,6 +2,10 @@ import { describe, expect, it } from "vitest";
 import { buildEmpireAgents } from "../agents.js";
 import * as generatedPrompts from "../prompts/generated.js";
 
+function permissionOf(agent: ReturnType<typeof buildEmpireAgents>[string]): Record<string, unknown> {
+  return (agent?.permission ?? {}) as Record<string, unknown>;
+}
+
 describe("buildEmpireAgents", () => {
   it("registers cabinet as mode all, eunuch as primary, hidden grand secretaries, and visible ministries", () => {
     const agents = buildEmpireAgents({});
@@ -20,8 +24,18 @@ describe("buildEmpireAgents", () => {
 
     expect(agents["empire-ministry-revenue"]?.permission).toEqual({
       "*": "allow",
+      task: "deny",
     });
     expect(agents["empire-ministry-justice"]?.permission?.edit).toBeUndefined();
+  });
+
+  it("prevents subagents from creating nested subagents by default", () => {
+    const agents = buildEmpireAgents({});
+
+    expect(permissionOf(agents["empire-grand-secretary-a"]).task).toBe("deny");
+    expect(permissionOf(agents["empire-ministry-works"]).task).toBe("deny");
+    expect(permissionOf(agents["empire-eunuch"]).task).toBeUndefined();
+    expect(permissionOf(agents["empire-cabinet"]).task).toBeUndefined();
   });
 
   it("uses agent-scoped model overrides and disabled roles", () => {
@@ -77,6 +91,7 @@ describe("buildEmpireAgents", () => {
 
     expect(agents["empire-ministry-revenue"]?.permission).toEqual({
       "*": "allow",
+      task: "deny",
       webfetch: "allow",
     });
   });
