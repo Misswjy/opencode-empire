@@ -17,6 +17,7 @@
   "files": [
     "dist",
     "README.md",
+    "LICENSE",
     "opencode-empire.schema.json"
   ],
   "scripts": {
